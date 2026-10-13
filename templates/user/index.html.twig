@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+<div class="container">
+    <br>
+    <h1>Utilisateurs</h1>
+    <br>
+    {% include 'layouts/_flash_message.html.twig' %}
+    <table class="table">
+        <tr>
+            <th>id</th>
+            <th>email</th>
+            <th>nom</th>
+            <th>prénom</th>
+            <th>rôles</th>
+            <th>actions</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.firstName }}</td>
+            <td>{{ user.lastName }}</td>
+            <td>
+                {% if ("ROLE_ADMIN" in user.roles) %}
+                    <span class="text-primary">administrateur</span>
+                {% elseif ("ROLE_EDITOR" in user.roles) %}
+                    <span class="text-success">editeur</span>
+                {% else %}
+                    <span class="text-secondary">client</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if ("ROLE_ADMIN" in user.roles == false) %}
+                    {% if ("ROLE_EDITOR" in user.roles == false) %}
+                        <a onclick="return confirm('Voulez-vous vraiment affecter le rôle éditeur à l\'utilisateur ?')" class="btn btn-outline-primary" href="{{ path('app_user_add_editor_role',{'id':user.id}) }}">Ajouter le rôle Editeur</a>
+                    {% else %}
+                        <a onclick="return confirm('Voulez-vous vraiment retirer le rôle éditeur à l\'utilisateur ?')" class="btn btn-danger" href="{{ path('app_user_remove_editor_role',{'id':user.id}) }}">Retirer le rôle Editeur</a>
+                    {% endif %}
+                    <a onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')" class="btn btn-danger" href="{{ path('app_user_delete',{'id':user.id}) }}">Supprimer</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <p>Aucun utilisateur à afficher</p>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
