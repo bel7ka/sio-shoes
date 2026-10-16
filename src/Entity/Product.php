@@ -15,6 +15,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'Ce nom de produit existe déjà',
     errorPath: 'name',
 )]
+
+#[UniqueEntity(
+fields: ['name'],
+message: 'Ce nom de produit existe déjà',
+errorPath: 'name',
+)]
 class Product
 {
     #[ORM\Id]
