@@ -1,16 +1,26 @@
 {{ form_start(form) }}
     <label for="">Nom du produit : </label>
-    {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'nom'}}) }}
+    {{ form_widget(form.name, {'attr': {'class': 'form form-control', 'placeholder': 'nom'}}) }}
     {{ form_errors(form.name) }}
     <br>
     <label for="">Description : </label>
-    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'description'}}) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form form-control'}}) }}
     <br>
     <label for="">Prix : </label>
-    {{ form_widget(form.price, {'attr': {'class': 'form-control', 'placeholder': 'prix'}}) }}
+    {{ form_widget(form.price, {'attr': {'class': 'form form-control'}}) }}
     <br>
     <label for="">Sous-catégories : </label>
-    {{ form_widget(form.subCategories, {'attr': {'class': 'form-control'}}) }}
+    {{ form_widget(form.subCategories, {'attr': {'class': 'form form-control'}}) }}
+    <br>
+    <label for="">Image : </label>
+    {% if form.vars.value.image is defined and form.vars.value.image %}
+        <div class="my-2">
+            <img src="{{ asset('uploads/images/' ~ form.vars.value.image) }}" alt="{{ form.vars.value.name }}" style="max-height: 100px;" class="img-thumbnail d-block mb-1">
+            <small class="text-muted">Image actuelle : {{ form.vars.value.image }}</small>
+        </div>
+    {% endif %}
+    {{ form_widget(form.image, {'attr': {'class': 'form form-control'}}) }}
+    {{ form_errors(form.image) }}
     <br>
     <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}

@@ -8,10 +8,11 @@
     <h1>Produits</h1>
     <br>
     {% include 'layouts/_flash_message.html.twig' %}
-    <table class="table">
+    <table class="table align-middle">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Image</th>
                 <th>Nom</th>
                 <th>Description</th>
                 <th>Prix</th>
@@ -23,6 +24,13 @@
         {% for product in products %}
             <tr>
                 <td>{{ product.id }}</td>
+                <td>
+                    {% if product.image %}
+                        <img src="{{ asset('uploads/images/' ~ product.image) }}" alt="{{ product.name }}" style="max-width: 60px; max-height: 60px; object-fit: cover;" class="img-thumbnail">
+                    {% else %}
+                        <span class="text-muted">Aucune</span>
+                    {% endif %}
+                </td>
                 <td>{{ product.name }}</td>
                 <td>{{ product.description|slice(0, 100) }} ...</td>
                 <td>{{ product.price }} €</td>
@@ -40,7 +48,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">Aucun produit à afficher</td>
+                <td colspan="7">Aucun produit à afficher</td>
             </tr>
         {% endfor %}
         </tbody>
