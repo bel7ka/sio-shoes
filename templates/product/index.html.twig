@@ -1,18 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Liste des produits{% endblock %}
 
 {% block body %}
-    <h1>Product index</h1>
-
+<div class="container">
+    <br>
+    <h1>Produits</h1>
+    <br>
+    {% include 'layouts/_flash_message.html.twig' %}
     <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Nom</th>
                 <th>Description</th>
-                <th>Price</th>
-                <th>actions</th>
+                <th>Prix</th>
+                <th>Sous-catégories</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,20 +24,28 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
-                <td>{{ product.price }}</td>
+                <td>{{ product.description|slice(0, 100) }} ...</td>
+                <td>{{ product.price }} €</td>
                 <td>
-                    <a href="{{ path('app_product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
+                    {% for sub_category in product.subCategories %}
+                        <span class="badge bg-secondary">{{ sub_category.name }}</span>
+                    {% else %}
+                        <span class="text-muted">Aucune</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a class="btn btn-outline-primary" href="{{ path('app_product_show', {'id': product.id}) }}">Afficher</a>
+                    <a class="btn btn-outline-secondary" href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="6">Aucun produit à afficher</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_product_new') }}">Create new</a>
+    <a class="btn btn-outline-success" href="{{ path('app_product_new') }}">Nouveau produit</a>
+</div>
 {% endblock %}

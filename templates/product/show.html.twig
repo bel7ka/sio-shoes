@@ -1,10 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product{% endblock %}
+{% block title %}Produit{% endblock %}
 
 {% block body %}
-    <h1>Product</h1>
-
+<div class="container">
+    <br>
+    <h1>Produit</h1>
+    <br>
     <table class="table">
         <tbody>
             <tr>
@@ -12,7 +14,7 @@
                 <td>{{ product.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
+                <th>Nom</th>
                 <td>{{ product.name }}</td>
             </tr>
             <tr>
@@ -20,15 +22,26 @@
                 <td>{{ product.description }}</td>
             </tr>
             <tr>
-                <th>Price</th>
-                <td>{{ product.price }}</td>
+                <th>Prix</th>
+                <td>{{ product.price }} €</td>
+            </tr>
+            <tr>
+                <th>Sous-catégories</th>
+                <td>
+                    {% for sub_category in product.subCategories %}
+                        <span class="badge bg-secondary">{{ sub_category.name }}</span>
+                    {% else %}
+                        <span class="text-muted">Aucune</span>
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_product_index') }}">back to list</a>
-
-    <a href="{{ path('app_product_edit', {'id': product.id}) }}">edit</a>
-
+    <a class="btn btn-outline-primary" href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
+    <br><br>
     {{ include('product/_delete_form.html.twig') }}
+    <br>
+    <a class="btn btn-dark" href="{{ path('app_product_index') }}">Retour</a>
+</div>
 {% endblock %}

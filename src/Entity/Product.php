@@ -15,12 +15,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
     message: 'Ce nom de produit existe déjà',
     errorPath: 'name',
 )]
-
-#[UniqueEntity(
-fields: ['name'],
-message: 'Ce nom de produit existe déjà',
-errorPath: 'name',
-)]
 class Product
 {
     #[ORM\Id]
@@ -111,5 +105,10 @@ class Product
         $this->subCategories->removeElement($subCategory);
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 }
