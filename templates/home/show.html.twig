@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="card mb-12" style="margin-top: 3vh">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if product.image %}
+                    <img src="{{ asset('uploads/images/' ~ product.image) }}" class="card-img-top" alt="{{ product.name }}">
+                {% else %}
+                    <img src="{{ asset('uploads/images/no_image_available_500x350.png') }}" class="card-img-top" alt="Placeholder image">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h1 class="card-title">{{ product.name }}</h1>
+                    <p class="card-text text-truncate">{{ product.description }}</p>
+                    <h3>{{ product.price }} €</h3>
+                    <a href="#" class="btn btn-outline-success">Ajouter au panier</a>
+                    <br><br>
+                    <a class="btn btn-dark" href="{{ path('app_home') }}">Retour</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <h2>Derniers produits ajoutés</h2>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-3 mt-4">
+                <div class="card" style="width: 20vh;">
+                    {% if product.image %}
+                        <a href="{{ path('app_home_product_show', {'id': product.id}) }}">
+                            <img src="{{ asset('uploads/images/' ~ product.image) }}" class="card-img-top" alt="{{ product.name }}">
+                        </a>
+                    {% else %}
+                        <img src="{{ asset('uploads/images/no_image_available_500x350.png') }}" class="card-img-top" alt="Placeholder image">
+                    {% endif %}
+                    <div class="card-body">
+                        <a style="text-decoration: none" href="{{ path('app_home_product_show', {'id': product.id}) }}">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                        </a>
+                        <p class="card-text text-truncate">{{ product.description }}</p>
+                        <h3>{{ product.price }} €</h3>
+                        <a href="#" class="btn btn-outline-success">Ajouter au panier</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>Aucun produit disponible.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
