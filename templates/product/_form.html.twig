@@ -9,6 +9,15 @@
     <label for="">Prix : </label>
     {{ form_widget(form.price, {'attr': {'class': 'form form-control'}}) }}
     <br>
+    {% if button_label is defined and button_label == 'Modifier' %}
+        <label for="">Stock : </label>
+        {{ form_widget(form.stock, {'attr': {'class': 'form form-control', 'readonly': true}}) }}
+    {% else %}
+        <label for="">Stock : </label>
+        {{ form_widget(form.stock, {'attr': {'class': 'form form-control', 'readonly': false}}) }}
+    {% endif %}
+    {{ form_errors(form.stock) }}
+    <br>
     <label for="">Sous-catégories : </label>
     {{ form_widget(form.subCategories, {'attr': {'class': 'form form-control'}}) }}
     <br>

@@ -34,15 +34,25 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[ORM\Column(options: ['default' => 0])]
+    private ?int $stock = 0;
+
     /**
      * @var Collection<int, SubCategory>
      */
     #[ORM\ManyToMany(targetEntity: SubCategory::class, inversedBy: 'products')]
     private Collection $subCategories;
 
+    /**
+     * @var Collection<int, AddProductHistory>
+     */
+    #[ORM\OneToMany(targetEntity: AddProductHistory::class, mappedBy: 'product', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $addProductHistories;
+
     public function __construct()
     {
         $this->subCategories = new ArrayCollection();
+        $this->addProductHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,6 +108,18 @@ class Product
         return $this;
     }
 
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, SubCategory>
      */
@@ -118,6 +140,36 @@ class Product
     public function removeSubCategory(SubCategory $subCategory): static
     {
         $this->subCategories->removeElement($subCategory);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AddProductHistory>
+     */
+    public function getAddProductHistories(): Collection
+    {
+        return $this->addProductHistories;
+    }
+
+    public function addAddProductHistory(AddProductHistory $addProductHistory): static
+    {
+        if (!$this->addProductHistories->contains($addProductHistory)) {
+            $this->addProductHistories->add($addProductHistory);
+            $addProductHistory->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddProductHistory(AddProductHistory $addProductHistory): static
+    {
+        if ($this->addProductHistories->removeElement($addProductHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($addProductHistory->getProduct() === $this) {
+                $addProductHistory->setProduct(null);
+            }
+        }
 
         return $this;
     }

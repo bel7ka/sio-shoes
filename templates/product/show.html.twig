@@ -36,6 +36,16 @@
                 <td>{{ product.price }} €</td>
             </tr>
             <tr>
+                <th>Stock</th>
+                <td>
+                    {% if product.stock > 0 %}
+                        <span class="badge bg-success">{{ product.stock }}</span>
+                    {% else %}
+                        <span class="badge bg-danger">Stock épuisé</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>Sous-catégories</th>
                 <td>
                     {% for sub_category in product.subCategories %}
@@ -48,6 +58,9 @@
         </tbody>
     </table>
 
+    <a class="btn btn-outline-info" href="{{ path('app_product_stock_add', {'id': product.id}) }}">Ajouter du stock</a>
+    <a class="ms-2" href="{{ path('app_product_stock_add_history', {'id': product.id}) }}">Afficher l'historique des ajouts au stock</a>
+    <br><br>
     <a class="btn btn-outline-primary" href="{{ path('app_product_edit', {'id': product.id}) }}">Modifier</a>
     <br><br>
     {{ include('product/_delete_form.html.twig') }}
